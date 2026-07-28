@@ -1,6 +1,7 @@
 import axios from 'axios';
-
+import { getSubdomain } from './subdomain';
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
 
 const api = axios.create({
   baseURL: API_URL,
@@ -35,5 +36,25 @@ api.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem('token');
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  
+  // ✅ Add idempotency key for POST and PUT requests
+  if (config.method === 'post' || config.method === 'put' || config.method === 'patch') {
+    const idempotencyKey = `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+    config.headers['Idempotency-Key'] = idempotencyKey;
+  }
+  
+  return config;
+});
+
+const subdomain = getSubdomain();
+if (subdomain) {
+  api.defaults.headers.common['X-Tenant'] = subdomain;
+}
 
 export default api;

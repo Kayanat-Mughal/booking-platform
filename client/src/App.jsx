@@ -6,8 +6,9 @@ import Login from './pages/Login.jsx';
 import Register from './pages/Register.jsx';
 import Dashboard from './pages/Dashboard.jsx';
 import Bookings from './pages/Bookings.jsx';
+import BookingDetail from './pages/BookingDetail.jsx';
 import DashboardLayout from './components/Layout/DashboardLayout.jsx';
-import ProtectedRoute from './components/Layout/ProtectedRoute.jsx';  // ← Add this
+import ProtectedRoute from './components/Layout/ProtectedRoute.jsx';
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
           >
             <Route index element={<Dashboard />} />
             <Route path="bookings" element={<Bookings />} />
+            <Route path="bookings/:id" element={<BookingDetail />} />
             <Route path="team" element={<h1>Team Page</h1>} />
             <Route path="settings" element={<h1>Settings Page</h1>} />
           </Route>

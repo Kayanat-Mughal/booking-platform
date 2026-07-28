@@ -22,6 +22,8 @@ A multi-tenant booking platform built during the internship. The project uses a 
 - Tenant-aware booking CRUD API implemented.
 - Booking read/write permissions implemented through RBAC middleware.
 - Booking management screen connected to the backend API.
+- Booking list grouped by date with detail view, create/update/delete flows, client-side validation, retry logic, and toast error handling.
+- Postman collection includes booking and auth endpoint documentation.
 - Basic wildcard subdomain detection implemented for hosts such as `acme.localhost` and `acme.example.com`.
 
 ### Remaining Hardening

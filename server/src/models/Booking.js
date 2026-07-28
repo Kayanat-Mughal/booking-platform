@@ -7,6 +7,11 @@ const bookingSchema = new mongoose.Schema({
     required: true,
     index: true,
   },
+  createdBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true,
+  },
   clientName: {
     type: String,
     required: true,
@@ -19,6 +24,10 @@ const bookingSchema = new mongoose.Schema({
     lowercase: true,
     trim: true,
     match: /^\S+@\S+\.\S+$/,
+  },
+  clientPhone: {
+    type: String,
+    trim: true,
   },
   service: {
     type: String,
@@ -33,6 +42,12 @@ const bookingSchema = new mongoose.Schema({
   endTime: {
     type: Date,
     required: true,
+    validate: {
+      validator(value) {
+        return !this.startTime || value > this.startTime;
+      },
+      message: 'End time must be after start time',
+    },
   },
   status: {
     type: String,
@@ -44,17 +59,18 @@ const bookingSchema = new mongoose.Schema({
     trim: true,
     maxlength: 1000,
   },
+  idempotencyKey: {
+    type: String,
+    unique: true,
+    sparse: true,
+  },
 }, {
   timestamps: true,
 });
 
+// Indexes for performance
 bookingSchema.index({ tenantId: 1, startTime: 1 });
-
-bookingSchema.pre('validate', function(next) {
-  if (this.endTime <= this.startTime) {
-    return next(new Error('endTime must be after startTime'));
-  }
-  next();
-});
+bookingSchema.index({ clientEmail: 1 });
+bookingSchema.index({ status: 1 });
 
 module.exports = mongoose.model('Booking', bookingSchema);

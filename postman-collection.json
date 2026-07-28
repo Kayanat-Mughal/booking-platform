@@ -1,0 +1,132 @@
+{
+  "info": {
+    "name": "Booking Platform API",
+    "description": "Multi-tenant SaaS Booking Platform API",
+    "version": "1.0.0"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/auth/register",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"user@example.com\",\n  \"password\": \"password123\",\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\",\n  \"companyName\": \"MyCompany\",\n  \"subdomain\": \"mycompany\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/auth/login",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"owner@acme.com\",\n  \"password\": \"password123\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Bookings",
+      "item": [
+        {
+          "name": "Create Booking",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/bookings",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Idempotency-Key",
+                "value": "{{$guid}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"clientName\": \"John Client\",\n  \"clientEmail\": \"john@client.com\",\n  \"service\": \"Consultation\",\n  \"startTime\": \"2026-07-28T10:00:00.000Z\",\n  \"endTime\": \"2026-07-28T11:00:00.000Z\",\n  \"notes\": \"Initial consultation\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Get All Bookings",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/bookings",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Get Booking by ID",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/bookings/{{bookingId}}",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Update Booking",
+          "request": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/bookings/{{bookingId}}",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"confirmed\",\n  \"notes\": \"Confirmed via email\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Delete Booking",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/bookings/{{bookingId}}",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5000"
+    },
+    {
+      "key": "token",
+      "value": ""
+    },
+    {
+      "key": "bookingId",
+      "value": ""
+    }
+  ]
+}
