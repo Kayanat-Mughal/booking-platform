@@ -36,7 +36,29 @@ const tenantSchema = new mongoose.Schema({
   isActive: {
     type: Boolean,
     default: true,
-  }
+  },
+  // Add these fields to your tenant schema
+stripeCustomerId: {
+  type: String,
+  sparse: true,
+},
+stripeSubscriptionId: {
+  type: String,
+  sparse: true,
+},
+subscriptionStatus: {
+  type: String,
+  enum: ['active', 'inactive', 'past_due', 'canceled', 'trialing'],
+  default: 'inactive',
+},
+subscriptionEndDate: {
+  type: Date,
+},
+plan: {
+  type: String,
+  enum: ['free', 'basic', 'premium'],
+  default: 'free',
+}
 }, {
   timestamps: true  // ✅ Auto-adds createdAt and updatedAt
 });

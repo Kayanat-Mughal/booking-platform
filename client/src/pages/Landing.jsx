@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import bookingLogo from '../assets/icons8-calender-100.png';
+import bookingLogo from '../assets/logo.png';
 
 const Landing = () => {
   return (
